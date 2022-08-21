@@ -13,19 +13,21 @@
 
 import { google } from "googleapis";
 
-
 // credentials
-const googleClientId: string = process.env.NODE_ENV === "production"
-    ? process.env.GOOGLE_CLIENT_ID_PROD || ""
-    : process.env.GOOGLE_CLIENT_ID_DEV || "";
+const googleClientId: string =
+    process.env.NODE_ENV === "production"
+        ? process.env.GOOGLE_CLIENT_ID_PROD || ""
+        : process.env.GOOGLE_CLIENT_ID_DEV || "";
 
-const googleClientSecret: string = process.env.NODE_ENV === "production"
-    ? process.env.GOOGLE_CLIENT_SECRET_PROD || ""
-    : process.env.GOOGLE_CLIENT_SECRET_DEV || "";
+const googleClientSecret: string =
+    process.env.NODE_ENV === "production"
+        ? process.env.GOOGLE_CLIENT_SECRET_PROD || ""
+        : process.env.GOOGLE_CLIENT_SECRET_DEV || "";
 
-const googleRefreshToken: string = process.env.NODE_ENV === "production"
-    ? process.env.GOOGLE_REFRESH_TOKEN_PROD || ""
-    : process.env.GOOGLE_REFRESH_TOKEN_DEV || "";
+const googleRefreshToken: string =
+    process.env.NODE_ENV === "production"
+        ? process.env.GOOGLE_REFRESH_TOKEN_PROD || ""
+        : process.env.GOOGLE_REFRESH_TOKEN_DEV || "";
 
 //initializing the oAuth api client
 // TODO: implement /auth route endpoint
@@ -37,7 +39,7 @@ const googleOAuth2Client = new google.auth.OAuth2(
 
 //setting the credentials to the api
 googleOAuth2Client.setCredentials({
-    refresh_token: googleRefreshToken
+    refresh_token: googleRefreshToken,
 });
 
 //exporting the oauth client instance

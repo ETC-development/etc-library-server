@@ -12,12 +12,11 @@ import { google } from "googleapis";
 import { File, RecursionTraverseCallback } from "interfaces/index.interfaces";
 import googleOAuth2Client from "./googleApiAuth";
 
-
 const params = {
     corpora: "drive",
     driveId: "0AFgLntsgR3PWUk9PVA",
     includeItemsFromAllDrives: true,
-    supportsAllDrives: true
+    supportsAllDrives: true,
 };
 
 /**
@@ -38,7 +37,7 @@ const recursiveDriveTraversal = async (
         const drive = google.drive({ version: "v3", auth: googleOAuth2Client });
         const files = await drive.files.list({
             ...params,
-            q: `'${folderId}' in parents and trashed = false` // get files that have "folderId" as their parent and are not in the trash
+            q: `'${folderId}' in parents and trashed = false`, // get files that have "folderId" as their parent and are not in the trash
         });
         await Promise.all(
             files.data.files!.map(async (file) => {

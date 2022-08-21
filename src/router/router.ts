@@ -5,20 +5,18 @@
  *
  *     etc-library-server is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
  *
- *     You should have received a copy of the GNU Affero General Public License along with etc-library-server. If not, see <https://www.gnu.org/licenses/>. 
+ *     You should have received a copy of the GNU Affero General Public License along with etc-library-server. If not, see <https://www.gnu.org/licenses/>.
  */
 
 import { Router } from "express";
 import searchEndpoint from "../controllers/search/search.controller";
 
-const router = Router()
-
+const router = Router();
 
 router.get("/search", searchEndpoint);
 
-
 router.get("/", (req, res) => {
-    res.send("working")
-})
+    res.send("working");
+});
 
-export default router
+export default router;

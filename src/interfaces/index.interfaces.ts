@@ -8,8 +8,6 @@
  *     You should have received a copy of the GNU Affero General Public License along with etc-library-server. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-
 import mongoose from "mongoose";
 
 export interface File {
@@ -21,7 +19,7 @@ export interface File {
     year: string;
 }
 
-export interface MFile extends mongoose.Document{
+export interface MFile extends mongoose.Document {
     name: string;
     url: string;
     type: string;
@@ -37,11 +35,10 @@ export interface SearchRequestQuery {
     module?: string;
     semester?: string;
     year?: string;
-    
+
     //for pagination
     page?: number;
     limit?: number;
-    
 }
 
 export interface RecursionTraverseCallback {

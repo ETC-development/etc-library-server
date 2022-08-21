@@ -10,7 +10,6 @@
 
 import { File, RecursionTraverseCallback } from "interfaces/index.interfaces";
 
-
 // this function will get called for each file given by the recursive traversal function (recursiveTraverse.ts)
 // the purpose of this function is to parse the path of the file in order to extract info
 
@@ -18,8 +17,12 @@ import { File, RecursionTraverseCallback } from "interfaces/index.interfaces";
  * @param {string[]} path       - An array of string that represent the path of a file : ["first year", "semester 2", "algebra1", "exams", "exam1.pdf"]
  * @param {string} id           - A string that represents the Google Drive ID of a file, it's what we'll represent the URL of the file
  * @param {File[]} outputArr    - The array which we'll push the parsed File objects to, later its elements will be written in bulk to the Mongodb collection
-* */
-const recursionCallback: RecursionTraverseCallback = (path: string[], id: string, outputArr: File[]) => {
+ * */
+const recursionCallback: RecursionTraverseCallback = (
+    path: string[],
+    id: string,
+    outputArr: File[]
+) => {
     let file: File = {
         //initializing the file object with default values
         name: "",
@@ -27,9 +30,8 @@ const recursionCallback: RecursionTraverseCallback = (path: string[], id: string
         type: "",
         semester: "0",
         module: "",
-        url: id
+        url: id,
     };
-
 
     try {
         // assigning name
@@ -109,8 +111,6 @@ const recursionCallback: RecursionTraverseCallback = (path: string[], id: string
     } catch (e) {
         console.log(e);
     }
-
 };
-
 
 export default recursionCallback;
