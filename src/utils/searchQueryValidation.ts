@@ -32,17 +32,15 @@ const searchQueryValidation: SearchQueryValidation = ({
     module,
     semester,
     limit,
-    page
+    page,
 }: SearchRequestQuery) => {
-
     //giving default values to page and limit when not provided
     let resultQuery: SearchRequestQuery = {
         limit: 20,
-        page: 1
-    }
+        page: 1,
+    };
 
     try {
-
         //checking for name
         if (name) {
             resultQuery.name = name.trim().toLowerCase();
@@ -96,10 +94,9 @@ const searchQueryValidation: SearchQueryValidation = ({
             resultQuery.type = type.trim().toLowerCase();
         }
 
-
         if (page) {
             if (Number.isInteger(+page)) {
-                if(+page > 0){
+                if (+page > 0) {
                     resultQuery.page = +page; //converting page to number
                 }
             }
@@ -107,16 +104,16 @@ const searchQueryValidation: SearchQueryValidation = ({
 
         if (limit) {
             if (Number.isInteger(+limit)) {
-                if(+limit > 0){
+                if (+limit > 0) {
                     resultQuery.limit = +limit; //converting limiy to number
                 }
             }
         }
 
         return { ok: true, query: resultQuery };
-    }catch (e){
-        console.log(e)
-        return valError("Unexpected error")
+    } catch (e) {
+        console.log(e);
+        return valError("Unexpected error");
     }
 };
 

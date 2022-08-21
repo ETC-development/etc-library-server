@@ -8,56 +8,68 @@
  *     You should have received a copy of the GNU Affero General Public License along with etc-library-server. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
-
 import { Request, Response } from "express";
 
 import FileModel from "../../models/File";
-import { MFile } from "interfaces/index.interfaces";
+import { MFile, SearchResponse } from "interfaces/index.interfaces";
 import searchQueryValidation from "../../utils/searchQueryValidation";
 
 const searchEndpoint = async (req: Request, res: Response) => {
-
     /**
      * @see searchQueryValidation
      * */
     const validation = searchQueryValidation(req.query);
 
-    if(!validation.ok || !validation.query){
-        return res.status(400).json({error: validation.error})
+    if (!validation.ok || !validation.query) {
+        return res.status(400).json({ error: validation.error });
     }
 
-    const query = validation.query
+    const query = validation.query;
 
     console.log({ ...query });
 
     // we search the db and return the docs
 
-    try{
-        let files: MFile[] = []
-        if(query.name)
-        {
+    try {
+        let files: MFile[] = [];
+        if (query.name) {
             //making a new query object but without name property
-            let queryWithoutName = {... query };
+            let queryWithoutName = { ...query };
             delete queryWithoutName.name;
 
-            const regex = new RegExp(query.name, 'i')
-            files = await FileModel.find({name: {$regex: regex}, ...queryWithoutName})
-        }else {
+            const regex = new RegExp(query.name, "i");
+            files = await FileModel.find({ name: { $regex: regex }, ...queryWithoutName })
+                .limit(query.limit!)
+                .skip((query.page! - 1) * query.limit!)
+                .exec();
+        } else {
             files = await FileModel.find(query)
+                .limit(query.limit!)
+                .skip((query.page! - 1) * query.limit!)
+                .exec();
         }
 
-        if(files.length == 0){
-            return res.status(400).json({error: "No files found, try a different query or filter"});
+        if (files.length == 0) {
+            return res
+                .status(400)
+                .json({ error: "No files found, try a different query or filter" });
         }
 
-        res.json(files)
-    }catch (e) {
-        console.log(e)
+        const totalFilesCount = await FileModel.countDocuments();
+
+        // preparing the response object
+        const response: SearchResponse = {
+            files,
+            currentPage: query.page!,
+            totalPages: Math.ceil(totalFilesCount/query.limit!),
+            totalFilesCount
+        }
+
+        res.json(response);
+
+    } catch (e) {
+        console.log(e);
     }
-
-}
+};
 
 export default searchEndpoint;
-
-
