@@ -85,18 +85,10 @@ const searchQueryValidation: SearchQueryValidation = ({
         //checking for module
         // Maybe_TODO: Add list of all possible modules to validate
         if (module) {
-            if (!semester) {
-                return valError("Semester has to be provided when specifying Module");
-            }
-
             resultQuery.module = module.trim().toLowerCase();
         }
 
         if (type) {
-            if (!module) {
-                return valError("Module has to be provided when specifying Type");
-            }
-
             resultQuery.type = type.trim().toLowerCase();
         }
 
@@ -111,7 +103,7 @@ const searchQueryValidation: SearchQueryValidation = ({
         if (limit) {
             if (Number.isInteger(+limit)) {
                 if (+limit > 0) {
-                    resultQuery.limit = +limit; //converting limiy to number
+                    resultQuery.limit = +limit; //converting limit to number
                 }
             }
         }
