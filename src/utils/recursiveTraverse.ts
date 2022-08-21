@@ -8,34 +8,56 @@
  *     You should have received a copy of the GNU Affero General Public License along with etc-library-server. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {google} from "googleapis";
+import { google } from "googleapis";
+import { File, RecursionTraverseCallback } from "interfaces/index.interfaces";
+import googleOAuth2Client from "./googleApiAuth";
 
 
-//credentials definitions
-const googleClientId: string =
-    process.env.NODE_ENV === "production"
-        ? process.env.GOOGLE_CLIENT_ID_PROD || ""
-        : process.env.GOOGLE_CLIENT_ID_DEV || "";
+const params = {
+    corpora: "drive",
+    driveId: "0AFgLntsgR3PWUk9PVA",
+    includeItemsFromAllDrives: true,
+    supportsAllDrives: true
+};
 
-const googleClientSecret: string =
-    process.env.NODE_ENV === "production"
-        ? process.env.GOOGLE_CLIENT_SECRET_PROD || ""
-        : process.env.GOOGLE_CLIENT_SECRET_DEV || "";
+/**
+ * @param {string} folderId*    - The Google Drive ID of the folder that we want to traverse
+ * @param {string[]} path        - The array of the path of the current folder that we are running the function on
+ * @param {RecursionTraverseCallback} callback  - A callback function that will be called when the type of the current file is not folder, means when we find a file in the Drive folders tree, we use this callback to save it with its path
+ * @param {File[]} outputArr           - ill only be passed to the callback function in order to save a parsed object that represents a file.
+ * @see recursionCallback
+ * @see File
+* */
+const recursiveDriveTraversal = async (
+    folderId: string | null | undefined,
+    path: string[],
+    callback: RecursionTraverseCallback,
+    outputArr: File[]
+) => {
+    try {
+        const drive = google.drive({ version: "v3", auth: googleOAuth2Client });
+        const files = await drive.files.list({
+            ...params,
+            q: `'${folderId}' in parents and trashed = false` // get files that have "folderId" as their parent and are not in the trash
+        });
+        await Promise.all(
+            files.data.files!.map(async (file) => {
+                if (file.name && file.id) {
+                    const newPath = path.concat(file.name.toLocaleLowerCase());
+                    if (file.mimeType === "application/vnd.google-apps.folder") {
+                        //if the Google file is a folder, run the recursive function on it
+                        await recursiveDriveTraversal(file.id, newPath, callback, outputArr);
+                    } else {
+                        callback(newPath, file.id, outputArr); //if the file isn't a folder, call the callback function for it
+                    }
+                } else {
+                    throw Error("file doesn't have a name or id");
+                }
+            })
+        );
+    } catch (e) {
+        console.log(e);
+    }
+};
 
-const googleRefreshToken: string =
-    process.env.NODE_ENV === "production"
-        ? process.env.GOOGLE_REFRESH_TOKEN_PROD || ""
-        : process.env.GOOGLE_REFRESH_TOKEN_DEV || "";
-
-//initializing the oAuth api client
-// TODO: implement /auth route endpoint
-const oAuthClient = new google.auth.OAuth2(googleClientId, googleClientSecret, "http://localhost/auth/");
-
-//setting the credentials to the api
-oAuthClient.setCredentials({
-    refresh_token: googleRefreshToken,
-});
-
-
-
-const drive = google.drive({ version: "v3", auth: oAuthClient });
+export default recursiveDriveTraversal;

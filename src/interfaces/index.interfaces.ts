@@ -17,3 +17,7 @@ export interface File {
     year: number;
 }
 
+
+export interface RecursionTraverseCallback {
+    (path: string[], id: string, outputArr: File[]): void;
+}

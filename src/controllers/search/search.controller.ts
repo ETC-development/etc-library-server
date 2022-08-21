@@ -8,4 +8,12 @@
  *     You should have received a copy of the GNU Affero General Public License along with etc-library-server. If not, see <https://www.gnu.org/licenses/>.
  */
 
-export default {}
+
+
+import { Express, Request, Response } from "express";
+
+const searchEndpoint = async (req: Request, res: Response) => {
+
+}
+
+
