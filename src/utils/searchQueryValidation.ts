@@ -108,7 +108,7 @@ const searchQueryValidation: SearchQueryValidation = ({
         if (limit) {
             if (Number.isInteger(+limit)) {
                 if(+limit > 0){
-                    resultQuery.page = +limit; //converting limiy to number
+                    resultQuery.limit = +limit; //converting limiy to number
                 }
             }
         }
