@@ -39,8 +39,8 @@ export interface SearchRequestQuery {
     year?: string;
     
     //for pagination
-    page: number;
-    limit: number;
+    page?: number;
+    limit?: number;
     
 }
 
