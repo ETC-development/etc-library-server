@@ -16,8 +16,8 @@ const FileSchema = new Schema<File>({
     module: String,
     type: String,
     url: String,
-    year: Number,
-    semester: Number,
+    year: String,
+    semester: String,
 });
 
 const FileModel = model<File>("files", FileSchema);

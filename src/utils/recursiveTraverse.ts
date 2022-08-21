@@ -27,7 +27,7 @@ const params = {
  * @param {File[]} outputArr           - ill only be passed to the callback function in order to save a parsed object that represents a file.
  * @see recursionCallback
  * @see File
-* */
+ * */
 const recursiveDriveTraversal = async (
     folderId: string | null | undefined,
     path: string[],

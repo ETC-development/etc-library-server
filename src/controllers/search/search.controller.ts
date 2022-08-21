@@ -10,10 +10,54 @@
 
 
 
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
+
+import FileModel from "../../models/File";
+import { MFile } from "interfaces/index.interfaces";
+import searchQueryValidation from "../../utils/searchQueryValidation";
 
 const searchEndpoint = async (req: Request, res: Response) => {
 
+    /**
+     * @see searchQueryValidation
+     * */
+    const validation = searchQueryValidation(req.query);
+
+    if(!validation.ok || !validation.query){
+        return res.status(400).json({error: validation.error})
+    }
+
+    const query = validation.query
+
+    console.log({ ...query });
+
+    // we search the db and return the docs
+
+    try{
+        let files: MFile[] = []
+        if(query.name)
+        {
+            //making a new query object but without name property
+            let queryWithoutName = {... query };
+            delete queryWithoutName.name;
+
+            const regex = new RegExp(query.name, 'i')
+            files = await FileModel.find({name: {$regex: regex}, ...queryWithoutName})
+        }else {
+            files = await FileModel.find(query)
+        }
+
+        if(files.length == 0){
+            return res.status(400).json({error: "No files found, try a different query or filter"});
+        }
+
+        res.json(files)
+    }catch (e) {
+        console.log(e)
+    }
+
 }
+
+export default searchEndpoint;
 
 

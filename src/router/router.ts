@@ -9,17 +9,16 @@
  */
 
 import { Router } from "express";
+import searchEndpoint from "../controllers/search/search.controller";
 
 const router = Router()
 
 
-router.get("/search", (req, res)=>{
-
-})
+router.get("/search", searchEndpoint);
 
 
 router.get("/", (req, res) => {
-    res.send("lllll")
+    res.send("working")
 })
 
 export default router
