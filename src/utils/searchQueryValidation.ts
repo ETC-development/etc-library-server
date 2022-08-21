@@ -35,6 +35,7 @@ const searchQueryValidation: SearchQueryValidation = ({
     page
 }: SearchRequestQuery) => {
 
+    //giving default values to page and limit when not provided
     let resultQuery: SearchRequestQuery = {
         limit: 20,
         page: 1
@@ -94,6 +95,7 @@ const searchQueryValidation: SearchQueryValidation = ({
 
             resultQuery.type = type.trim().toLowerCase();
         }
+
 
         if (page) {
             if (Number.isInteger(+page)) {
