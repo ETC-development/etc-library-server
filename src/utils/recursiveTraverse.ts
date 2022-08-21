@@ -21,7 +21,7 @@ const params = {
 };
 
 /**
- * @param {string} folderId*    - The Google Drive ID of the folder that we want to traverse
+ * @param {string} folderId    - The Google Drive ID of the folder that we want to traverse
  * @param {string[]} path        - The array of the path of the current folder that we are running the function on
  * @param {RecursionTraverseCallback} callback  - A callback function that will be called when the type of the current file is not folder, means when we find a file in the Drive folders tree, we use this callback to save it with its path
  * @param {File[]} outputArr           - ill only be passed to the callback function in order to save a parsed object that represents a file.
@@ -43,11 +43,15 @@ const recursiveDriveTraversal = async (
         await Promise.all(
             files.data.files!.map(async (file) => {
                 if (file.name && file.id) {
-                    const newPath = path.concat(file.name.toLocaleLowerCase());
+                    let newPath: string[];
                     if (file.mimeType === "application/vnd.google-apps.folder") {
+                        //making the folder's name lowercase
+                        newPath = path.concat(file.name.toLowerCase());
                         //if the Google file is a folder, run the recursive function on it
                         await recursiveDriveTraversal(file.id, newPath, callback, outputArr);
                     } else {
+                        // we don't need to make it lowercase bcs the file's name doesn't affect parsing its properties (semester, module,...)
+                        newPath = path.concat(file.name);
                         callback(newPath, file.id, outputArr); //if the file isn't a folder, call the callback function for it
                     }
                 } else {
