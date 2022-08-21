@@ -23,9 +23,9 @@ const recursionCallback: RecursionTraverseCallback = (path: string[], id: string
     let file: File = {
         //initializing the file object with default values
         name: "",
-        year: 0,
+        year: "0",
         type: "",
-        semester: 0,
+        semester: "0",
         module: "",
         url: id
     };
@@ -38,9 +38,9 @@ const recursionCallback: RecursionTraverseCallback = (path: string[], id: string
         //checking for year
         if (path.length !== 1) {
             //checkin if the file isn't located directly in the root directory
-            const yearNum = +path[0][0];
-            if (Number.isInteger(yearNum)) {
-                if (yearNum <= 5 && yearNum >= 1) {
+            const yearNum = path[0][0];
+            if (Number.isInteger(+yearNum)) {
+                if (+yearNum <= 5 && +yearNum >= 1) {
                     file.year = yearNum;
                 }
             }
@@ -53,15 +53,15 @@ const recursionCallback: RecursionTraverseCallback = (path: string[], id: string
             //checking if semester entry exist in path AND is not the last entry
             if (path[1].includes("semester")) {
                 // example, is path[1] is "semester 1", we'll have 1 here
-                let semNumber = +path[1].slice(-1);
+                let semNumber = path[1].slice(-1);
 
                 //checking if semester number is a correct integer
-                file.semester = Number.isInteger(semNumber) ? semNumber : 0; // 0 to indicate semester wasn't provided correctly or not at all
+                file.semester = Number.isInteger(+semNumber) ? semNumber : "0"; // 0 to indicate semester wasn't provided correctly or not at all
             } else {
-                file.semester = 0;
+                file.semester = "0";
             }
         } else {
-            file.semester = 0;
+            file.semester = "0";
         }
 
         //checking for module
