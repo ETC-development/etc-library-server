@@ -40,20 +40,22 @@ const rootDriveFolderId: string = process.env.ROOT_DRIVE_FOLDER_ID || "";
 if (!rootDriveFolderId)
     throw("No root folder id was provided, exiting with error");
 
+
 app.use(cors());
 app.use(express.json());
 
 app.use("/", router);
 
+// the array that will be used by the recursion callback to add the parsed objects
 let indexedFiles: File[] = [];
 
 mongoose
     .connect(mongoURL)
     .then(async () => {
         console.log("connected to db");
-        //traverse the drive and save files in db
 
-        //delete everything from db
+
+        // delete files collection from db to make sure that the db doesn't have files that were deleted from the drive
         try {
             await mongoose.connection.db.collection("files").drop();
         } catch (e) {

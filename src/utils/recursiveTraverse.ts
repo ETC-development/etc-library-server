@@ -14,12 +14,13 @@ import googleOAuth2Client from "./googleApiAuth";
 
 const params = {
     corpora: "drive",
-    driveId: "0AFgLntsgR3PWUk9PVA",
+    driveId: process.env.DRIVE_ID,
     includeItemsFromAllDrives: true,
     supportsAllDrives: true,
 };
 
 /**
+ * A function that recursively traverses the Google Drive folders tree to find all files within, along with their paths in the tree
  * @param {string} folderId    - The Google Drive ID of the folder that we want to traverse
  * @param {string[]} path        - The array of the path of the current folder that we are running the function on
  * @param {RecursionTraverseCallback} callback  - A callback function that will be called when the type of the current file is not folder, means when we find a file in the Drive folders tree, we use this callback to save it with its path

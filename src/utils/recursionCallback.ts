@@ -14,6 +14,8 @@ import { File, RecursionTraverseCallback } from "interfaces/index.interfaces";
 // the purpose of this function is to parse the path of the file in order to extract info
 
 /**
+ * A callback function that gets called by recursiveTraverse(...) function whenever it finds a file in the tree.
+ * It parses the path and makes a File object based on the entries in the path array
  * @param {string[]} path       - An array of string that represent the path of a file : ["first year", "semester 2", "algebra1", "exams", "exam1.pdf"]
  * @param {string} id           - A string that represents the Google Drive ID of a file, it's what we'll represent the URL of the file
  * @param {File[]} outputArr    - The array which we'll push the parsed File objects to, later its elements will be written in bulk to the Mongodb collection

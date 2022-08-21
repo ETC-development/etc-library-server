@@ -19,6 +19,7 @@ export interface File {
     year: string;
 }
 
+//Mongoose schema interface
 export interface MFile extends mongoose.Document {
     name: string;
     url: string;

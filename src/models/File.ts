@@ -11,6 +11,8 @@
 import { model, Schema } from "mongoose";
 import { File } from "interfaces/index.interfaces";
 
+
+// Mongoose Schema definition for the File object.
 const FileSchema = new Schema<File>({
     name: String,
     module: String,

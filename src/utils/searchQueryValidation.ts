@@ -25,6 +25,12 @@ const valError = (error: string): SearchQueryValidationReturn => {
 //we need to check if the given query is valid or not
 //for example, we check the types validity and their order
 //like: you can't provide "semester" without providing "year" and so on
+
+/**
+ * A function that validates the query object received from the request to /search
+ * @param {SearchRequestQuery} query        - The query object
+ * @return {SearchQueryValidationReturn}    - a valid query object along with error msg and if validation was ok or not
+ * */
 const searchQueryValidation: SearchQueryValidation = ({
     name,
     year,
