@@ -14,7 +14,7 @@
 import {
     SearchQueryValidation,
     SearchQueryValidationReturn,
-    SearchRequestQuery,
+    SearchRequestQuery, ValidSearchQuery
 } from "../interfaces/index.interfaces";
 
 // a helper function to return error object from searchQueryValidation function below
@@ -39,9 +39,9 @@ const searchQueryValidation: SearchQueryValidation = ({
     semester,
     limit,
     page,
-}: SearchRequestQuery) => {
+}) => {
     //giving default values to page and limit when not provided
-    let resultQuery: SearchRequestQuery = {
+    let resultQuery: ValidSearchQuery = {
         limit: 20,
         page: 1,
     };
@@ -49,7 +49,8 @@ const searchQueryValidation: SearchQueryValidation = ({
     try {
         //checking for name
         if (name) {
-            resultQuery.name = name.trim().toLowerCase();
+            const regex = new RegExp(name.trim(), "i");
+            resultQuery.name = { $regex: regex };
         }
 
         //checking for year
@@ -85,7 +86,8 @@ const searchQueryValidation: SearchQueryValidation = ({
         //checking for module
         // Maybe_TODO: Add list of all possible modules to validate
         if (module) {
-            resultQuery.module = module.trim().toLowerCase();
+            const regex = new RegExp(module.trim(), "i");
+            resultQuery.module = { $regex: regex };
         }
 
         if (type) {

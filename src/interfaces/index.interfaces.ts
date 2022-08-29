@@ -49,7 +49,23 @@ export interface RecursionTraverseCallback {
 export interface SearchQueryValidationReturn {
     ok?: boolean;
     error?: string;
-    query?: SearchRequestQuery;
+    query?: ValidSearchQuery;
+}
+
+export interface ValidSearchQuery {
+    name?: {
+        $regex: RegExp
+    };
+    type?: string;
+    module?: {
+        $regex: RegExp
+    };
+    semester?: string;
+    year?: string;
+
+    //for pagination
+    page?: number;
+    limit?: number;
 }
 
 export interface SearchQueryValidation {
