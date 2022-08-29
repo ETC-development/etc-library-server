@@ -31,31 +31,18 @@ const searchEndpoint = async (req: Request, res: Response) => {
     // we search the db and return the docs
 
     try {
-        let files: MFile[] = [];
-        if (query.name) {
-            //making a new query object but without name property
-            let queryWithoutName = { ...query };
-            delete queryWithoutName.name;
-
-            const regex = new RegExp(query.name, "i");
-            files = await FileModel.find({ name: { $regex: regex }, ...queryWithoutName })
+        const files: MFile[] = await FileModel.find(query)
                 .limit(query.limit!)
                 .skip((query.page! - 1) * query.limit!)
                 .exec();
-        } else {
-            files = await FileModel.find(query)
-                .limit(query.limit!)
-                .skip((query.page! - 1) * query.limit!)
-                .exec();
-        }
 
-        if (files.length == 0) {
+        if (files.length === 0) {
             return res
                 .status(400)
                 .json({ error: "No files found, try a different query or filter" });
         }
 
-        const totalFilesCount = await FileModel.countDocuments();
+        const totalFilesCount = await FileModel.countDocuments(query);
 
         // preparing the response object
         const response: SearchResponse = {
