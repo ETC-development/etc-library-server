@@ -86,8 +86,7 @@ const searchQueryValidation: SearchQueryValidation = ({
         //checking for module
         // Maybe_TODO: Add list of all possible modules to validate
         if (module) {
-            const regex = new RegExp(module.trim(), "i");
-            resultQuery.module = { $regex: regex };
+            resultQuery.module = module.trim().toLowerCase();
         }
 
         if (type) {

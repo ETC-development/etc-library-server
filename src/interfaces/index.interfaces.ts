@@ -15,6 +15,7 @@ export interface File {
     url: string;
     type: string;
     module: string;
+    submodule?: string; // like intensive english: esp, reading...
     semester: string;
     year: string;
 }
@@ -25,6 +26,7 @@ export interface MFile extends mongoose.Document {
     url: string;
     type: string;
     module: string;
+    submodule?: string;
     semester: string;
     year: string;
 }
@@ -34,6 +36,7 @@ export interface SearchRequestQuery {
     name?: string;
     type?: string;
     module?: string;
+    submodule?: string;
     semester?: string;
     year?: string;
 
@@ -57,9 +60,8 @@ export interface ValidSearchQuery {
         $regex: RegExp
     };
     type?: string;
-    module?: {
-        $regex: RegExp
-    };
+    module?: string;
+    submodule?: string;
     semester?: string;
     year?: string;
 

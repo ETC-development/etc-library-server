@@ -32,6 +32,7 @@ const recursionCallback: RecursionTraverseCallback = (
         type: "",
         semester: "0",
         module: "",
+        //submodule is optional, so we can just not include it, if it is required, we'll set it later in this function (down below)
         url: id,
     };
 
@@ -80,7 +81,7 @@ const recursionCallback: RecursionTraverseCallback = (
             //we check for submodule
             //in this case, path[3] is the submodule
             if (path[3] && path.length !== 4) {
-                file.module += ` | ${path[3]}`; //we make the module name smth like: "intensive english | reading"
+                file.submodule = path[3];
 
                 //checking for type
                 let type = path[4];

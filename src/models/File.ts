@@ -16,6 +16,10 @@ import { File } from "interfaces/index.interfaces";
 const FileSchema = new Schema<File>({
     name: String,
     module: String,
+    submodule: {
+        type: String,
+        required: false,
+    },
     type: String,
     url: String,
     year: String,
