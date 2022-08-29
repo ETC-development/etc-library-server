@@ -36,6 +36,7 @@ const searchQueryValidation: SearchQueryValidation = ({
     year,
     type,
     module,
+    submodule,
     semester,
     limit,
     page,
@@ -87,6 +88,10 @@ const searchQueryValidation: SearchQueryValidation = ({
         // Maybe_TODO: Add list of all possible modules to validate
         if (module) {
             resultQuery.module = module.trim().toLowerCase();
+        }
+
+        if(submodule){
+            resultQuery.submodule = submodule.trim().toLowerCase();
         }
 
         if (type) {
