@@ -10,10 +10,13 @@
 
 import { Router } from "express";
 import searchEndpoint from "../controllers/search/search.controller";
+import updateIndexEndpoint from "../controllers/update-index/update-index.controller";
 
 const router = Router();
 
 router.get("/search", searchEndpoint);
+
+router.get("/update-index", updateIndexEndpoint);
 
 router.get("/", (req, res) => {
     res.send("working");
