@@ -11,15 +11,37 @@
 import { Router } from "express";
 import searchEndpoint from "../controllers/search/search.controller";
 import updateIndexEndpoint from "../controllers/update-index/update-index.controller";
+import rateLimit from "express-rate-limit";
 
 const router = Router();
 
-router.get("/search", searchEndpoint);
+const searchLimiter = rateLimit({
+    windowMs: 1000 * 60,  // 1 minute
+    max: 50, // maximum of 100 request per minute
+    standardHeaders: true
+})
 
-router.get("/update-index", updateIndexEndpoint);
+const updateIndexLimiter = rateLimit({
+    windowMs: 1000 * 60 * 5,    // 5 minute
+    max: 1, //only allow 1 request per minute
+    standardHeaders: true,
+    message: "You have reached maximum calls, please wait before making another request to this endpoint"
+})
+
+router.get("/search", searchLimiter, searchEndpoint);
+
+router.get("/update-index", updateIndexLimiter, updateIndexEndpoint);
+
+// for pinging services
+router.head("/update-index", updateIndexLimiter, updateIndexEndpoint);
 
 router.get("/", (req, res) => {
     res.send("working");
 });
+
+// for pinging service
+router.head("/", (req, res)=>{
+    res.status(200).send();
+})
 
 export default router;
