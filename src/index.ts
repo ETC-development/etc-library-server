@@ -10,12 +10,13 @@
 
 //initializing env variables before importing anything else to make sure it will cover them
 import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import router from "./router/router";
 import cors from "cors";
 import mongoose from "mongoose";
 
-dotenv.config();
 
 const app = express();
 
