@@ -20,6 +20,9 @@ import mongoose from "mongoose";
 
 const app = express();
 
+// to make express-rate-limiter work on production when there is a proxy
+app.set('trust proxy', 1);
+
 const PORT = process.env.PORT || 3001;
 
 const mongoURL: string =
