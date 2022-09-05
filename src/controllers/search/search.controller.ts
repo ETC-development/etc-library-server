@@ -32,9 +32,10 @@ const searchEndpoint = async (req: Request, res: Response) => {
 
     try {
         const files: MFile[] = await FileModel.find(query)
-                .limit(query.limit!)
-                .skip((query.page! - 1) * query.limit!)
-                .exec();
+            .limit(query.limit!)
+            .skip((query.page! - 1) * query.limit!)
+            .sort({ submodule: 1, name: 1 })
+            .exec();
 
         if (files.length === 0) {
             return res
@@ -48,12 +49,11 @@ const searchEndpoint = async (req: Request, res: Response) => {
         const response: SearchResponse = {
             files,
             currentPage: query.page!,
-            totalPages: Math.ceil(totalFilesCount/query.limit!),
-            totalFilesCount
-        }
+            totalPages: Math.ceil(totalFilesCount / query.limit!),
+            totalFilesCount,
+        };
 
         res.json(response);
-
     } catch (e) {
         console.log(e);
     }
